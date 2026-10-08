@@ -427,6 +427,25 @@ p {
   margin-bottom: 10px;
 }
 
+.location-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.location-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.location-card h3 {
+  color: rgb(94, 112, 145);
+  margin-bottom: 10px;
+}
+
 /* --- About Section --- */
 .about-content {
   max-width: 800px;
