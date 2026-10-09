@@ -1,48 +1,10 @@
-// Contact form AJAX submission to send-quote.php
+// Contact form — let Formspree handle submission natively (no AJAX)
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('quoteForm');
     if (!form) return;
-    
-    const submitBtn = document.getElementById('submitBtn');
-    const messageDiv = document.getElementById('formMessage');
-    
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Disable button and show loading state
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Sending...';
-        messageDiv.style.display = 'none';
-        
-        // Collect form data
-        const formData = new FormData(form);
-        
-        // Send via fetch to send-quote.php
-        fetch('send-quote.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                messageDiv.style.display = 'block';
-                messageDiv.className = 'form-success';
-                messageDiv.innerHTML = '<strong>Thank you!</strong> Your quote request has been sent. We\'ll contact you within 24 hours.';
-                form.reset();
-            } else {
-                throw new Error(data.message || 'Something went wrong');
-            }
-        })
-        .catch(error => {
-            messageDiv.style.display = 'block';
-            messageDiv.className = 'form-error';
-            messageDiv.innerHTML = '<strong>Error:</strong> ' + error.message;
-        })
-        .finally(() => {
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Send Request';
-        });
-    });
+
+    // Remove any inline onsubmit handler so the form posts directly to Formspree
+    form.removeAttribute('onsubmit');
 });
 
 // Mobile menu toggle
