@@ -1,1 +1,44 @@
-/index.html / 301
+# ============================================================
+# EOPW — Cloudflare redirects
+# Format:  <source>  <destination>  <status>
+# First match wins, evaluated top to bottom.
+#
+# NOTE ON URL SCHEME (verified 2026-11-09):
+#   This host serves EXTENSIONLESS URLs. Every .html request returns
+#   `307` to its extensionless twin — that is Cloudflare's documented
+#   `html_handling: auto-trailing-slash` default, not a misconfiguration.
+#   Cloudflare exposes no html_handling mode that preserves .html *and*
+#   directory-index behavior, so extensionless is the scheme to adopt.
+#   Therefore every destination below uses the extensionless form:
+#   pointing a 301 at a .html URL would add a second hop (301 -> 307 -> 200).
+#   See gsc-analysis-2026-11-09.md §13.
+# ============================================================
+
+# --- Canonical root -------------------------------------------------
+/index.html                                   /                                         301
+
+
+# --- Legacy HostGator / WordPress URLs ------------------------------
+# All three verified HTTP 404 on 2026-11-09 while still earning
+# impressions in Search Console. /all-services.html was ranking at
+# position 9.00 — page one — as a dead page.
+# Both trailing-slash and extensionless variants are listed because
+# Cloudflare's static matching is exact.
+
+/all-services.html                            /services                                 301
+/all-services                                 /services                                 301
+
+/east-orlando-pressure-washers/driveway-cleaning-in-orlando/    /services/driveway-cleaning   301
+/east-orlando-pressure-washers/driveway-cleaning-in-orlando     /services/driveway-cleaning   301
+
+/how-to-clean-screen-enclosures/              /services/pool-deck-cleaning              301
+/how-to-clean-screen-enclosures               /services/pool-deck-cleaning              301
+
+
+# --- Catch-all for remaining legacy WordPress paths -----------------
+# The old site lived under /east-orlando-pressure-washers/ (nested
+# Elementor-style paths). Only the driveway URL still earns impressions,
+# but anything else under that directory would otherwise hard-404.
+# Must stay BELOW the specific rules above — first match wins.
+
+/east-orlando-pressure-washers/*              /services                                 301
