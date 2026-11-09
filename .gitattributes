@@ -1,0 +1,11 @@
+# Cloudflare Workers Static Assets parses `_redirects` and is LINE-ENDING
+# SENSITIVE: a CRLF copy is ignored silently - every rule stops applying and
+# nothing anywhere reports an error. The site would just quietly 404 where it
+# used to redirect. Pin it to LF so no checkout, editor or autocrlf setting
+# can ever convert it.
+#
+# Verified 2026-11-09: /index.html returned 301 (not the platform's 307) only
+# because the rules were parsed, which is the proof this file is being read.
+_redirects text eol=lf
+
+# Everything else keeps git's default behaviour.
