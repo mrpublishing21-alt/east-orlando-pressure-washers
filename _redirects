@@ -11,11 +11,44 @@
 #   directory-index behavior, so extensionless is the scheme to adopt.
 #   Therefore every destination below uses the extensionless form:
 #   pointing a 301 at a .html URL would add a second hop (301 -> 307 -> 200).
-#   See gsc-analysis-2026-11-09.md §13.
+#
+#   A 307 means "TEMPORARY", so Google keeps the OLD .html URL as the
+#   canonical and never consolidates onto the extensionless one. That is
+#   why /contact, /services, /gallery and /locations/cypress-springs are
+#   stuck in Search Console as "Alternate page with proper canonical tag"
+#   (excluded from the index), and why that count stepped 1 -> 0 -> 2 -> 4
+#   at the 2026-10-09 migration and then stayed flat.
+#
+#   The block below converts every .html URL to a PERMANENT 301, so the old
+#   URLs retire and the extensionless ones become the canonical set.
+#
+#   See coverage-analysis-2026-11-09.md and gsc-analysis-2026-11-09.md §13.
 # ============================================================
 
-# --- Canonical root -------------------------------------------------
+# --- URL scheme: retire the old .html URLs, permanently -------------
+# 301, not the platform's built-in 307. These are the URLs the site served
+# on HostGator before the 2026-10-09 migration to Cloudflare.
+
 /index.html                                   /                                         301
+
+/about.html                                   /about                                    301
+/contact.html                                 /contact                                  301
+/faq.html                                     /faq                                      301
+/gallery.html                                 /gallery                                  301
+/services.html                                /services                                 301
+
+/services/driveway-cleaning.html              /services/driveway-cleaning               301
+/services/fence-cleaning.html                 /services/fence-cleaning                  301
+/services/house-soft-wash.html                /services/house-soft-wash                 301
+/services/patio-lanai-cleaning.html           /services/patio-lanai-cleaning            301
+/services/pool-deck-cleaning.html             /services/pool-deck-cleaning              301
+/services/walkway-cleaning.html               /services/walkway-cleaning                301
+
+/locations/avalon-park.html                   /locations/avalon-park                    301
+/locations/cypress-springs.html               /locations/cypress-springs                301
+/locations/oviedo.html                        /locations/oviedo                         301
+/locations/waterford-lakes.html               /locations/waterford-lakes                301
+/locations/winter-park.html                   /locations/winter-park                    301
 
 
 # --- Legacy HostGator / WordPress URLs ------------------------------
